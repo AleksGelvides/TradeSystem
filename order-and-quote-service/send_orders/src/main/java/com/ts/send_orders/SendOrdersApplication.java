@@ -1,13 +1,13 @@
-package com.ts.order_and_quote_service;
+package com.ts.send_orders;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class OrderAndQuoteServiceApplication {
+public class SendOrdersApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(OrderAndQuoteServiceApplication.class, args);
+        SpringApplication.run(SendOrdersApplication.class, args);
     }
 
 }

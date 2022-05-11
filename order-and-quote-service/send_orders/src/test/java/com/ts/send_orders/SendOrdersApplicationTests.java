@@ -1,10 +1,10 @@
-package com.ts.order_and_quote_service;
+package com.ts.send_orders;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class OrderAndQuoteServiceApplicationTests {
+class SendOrdersApplicationTests {
 
     @Test
     void contextLoads() {
