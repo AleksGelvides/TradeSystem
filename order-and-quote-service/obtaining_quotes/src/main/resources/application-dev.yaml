@@ -1,2 +1,19 @@
+server:
+  port: 8081
+
+
 access-tinkoff:
-  ttoken: t.92Z55zO5fgs1P_dQn0-iYqdKPfg9sEZQ-Nz4CG3-ImSk6k1yA1UNFFiCuFZFVXJChPlwAV43FfnJ4F_WBWKrWA
+  ttoken: "t.92Z55zO5fgs1P_dQn0-iYqdKPfg9sEZQ-Nz4CG3-ImSk6k1yA1UNFFiCuFZFVXJChPlwAV43FfnJ4F_WBWKrWA"
+
+spring:
+  liquibase:
+    enabled: true
+    change-log: classpath:db/changelog/db.changelog-master.yaml
+  datasource:
+    url: jdbc:postgresql://localhost:5433/postgres
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: validate

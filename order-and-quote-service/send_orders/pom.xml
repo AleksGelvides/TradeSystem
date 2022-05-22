@@ -7,14 +7,12 @@
         <groupId>com.ts</groupId>
         <artifactId>order-and-quote-service</artifactId>
         <version>0.0.1-SNAPSHOT</version>
-        <relativePath/> <!-- lookup parent from repository -->
     </parent>
 
     <groupId>com.ts</groupId>
     <artifactId>send_orders</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>send_orders</name>
-    <description>send_orders</description>
 
     <properties>
         <java.version>17</java.version>

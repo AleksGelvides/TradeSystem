@@ -1,0 +1,8 @@
+databaseChangeLog:
+  - changeSet:
+      id: 1.0.0
+      author: gelvides.aleksey@outlook.com
+      changes:
+        - sqlFile:
+            encoding: utf8
+            path: classpath:db/changelog/changeset/sqlFiles/quotes/changeQuotes.sql
