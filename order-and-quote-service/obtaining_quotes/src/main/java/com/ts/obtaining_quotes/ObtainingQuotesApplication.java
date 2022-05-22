@@ -8,5 +8,4 @@ public class ObtainingQuotesApplication{
     public static void main(String[] args) {
         SpringApplication.run(ObtainingQuotesApplication.class, args);
     }
-
 }
