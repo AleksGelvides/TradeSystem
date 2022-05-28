@@ -1,10 +1,20 @@
 server:
   port: 8081
 
-
-access-tinkoff:
-  ttoken: "t.92Z55zO5fgs1P_dQn0-iYqdKPfg9sEZQ-Nz4CG3-ImSk6k1yA1UNFFiCuFZFVXJChPlwAV43FfnJ4F_WBWKrWA"
-
+service:
+  tinkoff:
+#    Ключ тинька. Нужно будет вынести в базу, если будет толк от этого
+    token: "t.92Z55zO5fgs1P_dQn0-iYqdKPfg9sEZQ-Nz4CG3-ImSk6k1yA1UNFFiCuFZFVXJChPlwAV43FfnJ4F_WBWKrWA"
+#    Кол-во дней, за которые нужно получить котировки
+    days: 100
+#    Шаг до паузы. Тинькоф Инвест позволяет сделать 100 запросов в минуту
+    steps: 100
+#    Ожидание в МС
+    wait: 60000
+    timeframe:
+      - _DAY
+      - _HOUR
+      - _5_MINUTES
 spring:
   liquibase:
     enabled: true

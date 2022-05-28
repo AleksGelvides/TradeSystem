@@ -1,5 +1,6 @@
 package com.ts.obtaining_quotes.service.quote;
 
+import com.ts.obtaining_quotes.config.QuoteBrokerConfiguration;
 import com.ts.obtaining_quotes.domain.FinancialInstrumentDto;
 import com.ts.obtaining_quotes.enums.Status;
 import com.ts.obtaining_quotes.enums.TimeFrame;
@@ -22,16 +23,18 @@ import java.util.ArrayList;
 @Service
 public class QuoteServiceImpl implements QuoteService {
 
-    private String token = "t.92Z55zO5fgs1P_dQn0-iYqdKPfg9sEZQ-Nz4CG3-ImSk6k1yA1UNFFiCuFZFVXJChPlwAV43FfnJ4F_WBWKrWA";
     private final InvestApi api;
     private final FinancialInstrumentDto financialInstrumentDto;
     private final QuoteRepository quoteRepository;
     private final FinancialInstrumentRepository finRepository;
+    private QuoteBrokerConfiguration config;
 
     private QuoteServiceImpl(FinancialInstrumentDto financialInstrumentDto,
                              QuoteRepository repository,
-                             FinancialInstrumentRepository finRepository) {
-        this.api = InvestApi.create(token);
+                             FinancialInstrumentRepository finRepository,
+                             QuoteBrokerConfiguration config) {
+        this.config = config;
+        this.api = InvestApi.create(this.config.getToken());
         this.quoteRepository = repository;
         this.finRepository = finRepository;
         this.financialInstrumentDto = financialInstrumentDto;
@@ -39,35 +42,29 @@ public class QuoteServiceImpl implements QuoteService {
 
     public static QuoteServiceImpl creatQuoteService(FinancialInstrumentDto financialInstrumentDto,
                                                      QuoteRepository quoteRepository,
-                                                     FinancialInstrumentRepository finRepository) {
-        return new QuoteServiceImpl(financialInstrumentDto, quoteRepository, finRepository);
+                                                     FinancialInstrumentRepository finRepository,
+                                                     QuoteBrokerConfiguration config) {
+        return new QuoteServiceImpl(financialInstrumentDto, quoteRepository, finRepository, config);
     }
 
     @Override
     @SneakyThrows
     public void saveHistoriesQuoteInDB(FinancialInstrument instrument) {
         try {
-            int days = 100; // Нужно исправить и убрать хардкод
+
             log.info("Loading financial instrument in database: " + instrument.getTool());
             finRepository.save(instrument);
 
-            log.info("Loading quotes in database | Time frame: " + TimeFrame._DAY);
-            quoteRepository.saveAll(loadHistory(days, instrument, TimeFrame._DAY));
-            log.info("Quotes saved in DB | instrument: " + instrument.getTool());
+            for(int x = 0; x <= config.getTimeframe().size() - 1; x++){
+                log.info("Loading quotes in database | Time frame: " + config.getTimeframe().get(x));
+                quoteRepository.saveAll(loadHistory(config.getDays(), instrument, config.getTimeframe().get(x)));
+                log.info("Quotes saved in DB | instrument: " + instrument.getTool());
 
-            log.info("Loading quotes in database | Time frame: " + TimeFrame._HOUR);
-            quoteRepository.saveAll(loadHistory(days, instrument, TimeFrame._HOUR));
-            log.info("Quotes saved in DB | instrument: " + instrument.getTool());
-
-            log.info("Loading quotes in database | Time frame: " + TimeFrame._5_MINUTES);
-            quoteRepository.saveAll(loadHistory(days, instrument, TimeFrame._5_MINUTES));
-            log.info("Quotes saved in DB | instrument: " + instrument.getTool());
+            }
 
         } catch (Exception e) {
-            e.getStackTrace();
+            e.printStackTrace();
         }
-
-
     }
 
     @Override
@@ -81,10 +78,9 @@ public class QuoteServiceImpl implements QuoteService {
                                          TimeFrame timeFrame) {
         ArrayList<Quote> quoteList = new ArrayList<>();
         try {
-            int step = 100; // Максимум запросов в минуту от тинька.
-
+            int step = config.getSteps();
             log.info("Get quotes | Timeframe: " + timeFrame + " started");
-            for (int x = 1; x <= days; x++) {
+            for (int x = 0; x <= days; x++) {
 
                 api.getMarketDataService()
                         .getCandlesSync(financialInstrumentDto.getFIGI(),
@@ -96,14 +92,14 @@ public class QuoteServiceImpl implements QuoteService {
                 if (x == step) {
                     step += step;
                     log.info("Get quotes | Timeframe: " + timeFrame + " expects");
-                    Thread.currentThread().join(1000 * 60);
+                    Thread.currentThread().join(config.getWait());
                     log.info("Get quotes | Timeframe: " + timeFrame + " started");
                 }
             }
             log.info("Received quotes | instrument: " + instrument.getTool() + " quotes count: " + quoteList.size());
             return quoteList;
         } catch (Exception e) {
-            e.getStackTrace();
+            e.printStackTrace();
             throw new Exception("Get quotes error. Check stack trace");
         }
     }

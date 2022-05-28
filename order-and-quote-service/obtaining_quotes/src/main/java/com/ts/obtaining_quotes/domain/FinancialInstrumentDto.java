@@ -4,8 +4,6 @@ import lombok.Data;
 import lombok.experimental.Accessors;
 import org.springframework.stereotype.Component;
 
-import java.math.BigDecimal;
-
 @Data
 @Accessors(chain = true)
 @Component
