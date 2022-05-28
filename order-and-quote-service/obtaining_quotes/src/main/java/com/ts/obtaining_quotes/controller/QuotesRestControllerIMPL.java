@@ -22,7 +22,7 @@ public class QuotesRestControllerIMPL implements QuoteRestControllerAPI {
             var responseFacade = facade.startTrackQuote(financialInstrumentDto);
             return new ResponseEntity<>(responseFacade, HttpStatus.OK);
         }catch (Exception e){
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+            return new ResponseEntity<>("There was an error. Please contact your administrator", HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }

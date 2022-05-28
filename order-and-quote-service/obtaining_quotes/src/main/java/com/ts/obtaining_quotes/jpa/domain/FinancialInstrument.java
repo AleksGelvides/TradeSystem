@@ -25,6 +25,7 @@ public class FinancialInstrument {
     private String tool;
     @Column(name = "nominal")
     private double nominal;
+    @Column(name = "create_date")
     @CreationTimestamp
     private LocalDateTime createDate;
 }
