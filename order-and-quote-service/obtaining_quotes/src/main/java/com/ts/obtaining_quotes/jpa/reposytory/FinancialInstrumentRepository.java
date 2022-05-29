@@ -12,4 +12,9 @@ public interface FinancialInstrumentRepository extends JpaRepository<FinancialIn
 
     @Query(nativeQuery = true, value = "select count(id) from finance_instrument where figi = :figi")
     int getIntAtFIGI(@Param("figi") String figi);
+
+    FinancialInstrument getByTool(String tool);
+
+    void deleteByFIGI(String FIGI);
+
 }

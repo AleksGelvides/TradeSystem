@@ -2,12 +2,11 @@ package com.ts.obtaining_quotes.facade;
 
 
 import com.ts.obtaining_quotes.config.QuoteBrokerConfiguration;
-import com.ts.obtaining_quotes.domain.FacadeResponse;
+import com.ts.obtaining_quotes.message.FacadeResponse;
 import com.ts.obtaining_quotes.domain.FinancialInstrumentDto;
 import com.ts.obtaining_quotes.enums.Status;
 import com.ts.obtaining_quotes.jpa.reposytory.FinancialInstrumentRepository;
 import com.ts.obtaining_quotes.jpa.reposytory.QuoteRepository;
-import com.ts.obtaining_quotes.mappers.FinancialInstrumentMapper;
 import com.ts.obtaining_quotes.service.quote.QuoteService;
 import com.ts.obtaining_quotes.service.quote.QuoteServiceImpl;
 import lombok.SneakyThrows;
@@ -52,7 +51,7 @@ public class ObtainingQuotesFacade {
             Runnable work = () -> {
                 lock.lock();
                 log.warn("Was created quote service: " + quoteService.hashCode() + "-> Time: " + LocalDateTime.now());
-                quoteService.saveHistoriesQuoteInDB(FinancialInstrumentMapper.INSTANCE.toFinancialInstrument(financialInstrumentDto));
+                quoteService.saveHistoriesQuoteInDB();
                 lock.unlock();
             };
 

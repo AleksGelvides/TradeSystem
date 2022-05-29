@@ -5,9 +5,8 @@ service:
   tinkoff:
 #    Ключ тинька. Нужно будет вынести в базу, если будет толк от этого
     token: "t.92Z55zO5fgs1P_dQn0-iYqdKPfg9sEZQ-Nz4CG3-ImSk6k1yA1UNFFiCuFZFVXJChPlwAV43FfnJ4F_WBWKrWA"
-#    "t.92Z55zO5fgs1P_dQn0-iYqdKPfg9sEZQ-Nz4CG3-ImSk6k1yA1UNFFiCuFZFVXJChPlwAV43FfnJ4F_WBWKrWA"
 #    Кол-во дней, за которые нужно получить котировки
-    days: 100
+    days: 5
 #    Шаг до паузы. Тинькоф Инвест позволяет сделать 100 запросов в минуту
     steps: 100
 #    Ожидание в МС
@@ -18,13 +17,12 @@ service:
       - _5_MINUTES
 spring:
   liquibase:
-    enabled: true
+    enabled: false
     change-log: classpath:db/changelog/db.changelog-master.yaml
   datasource:
-    url: jdbc:postgresql://localhost:5433/postgres
+    url: jdbc:tc:postgresql:14:///test-db
     username: postgres
     password: postgres
-    driver-class-name: org.postgresql.Driver
   jpa:
     hibernate:
-      ddl-auto: validate
+      ddl-auto: create-drop

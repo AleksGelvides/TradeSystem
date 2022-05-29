@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 @Service
 public interface QuoteService {
 
-    void saveHistoriesQuoteInDB(FinancialInstrument instrument);
+    void saveHistoriesQuoteInDB();
 
     Enum<Status> getQuotes();
 
