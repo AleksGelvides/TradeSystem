@@ -1,5 +1,6 @@
 package com.ts.obtaining_quotes.jpa.reposytory;
 
+import com.ts.obtaining_quotes.enums.TimeFrame;
 import com.ts.obtaining_quotes.jpa.domain.Quote;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -12,5 +13,7 @@ public interface QuoteRepository extends JpaRepository<Quote, Long> {
 
     @Query(nativeQuery = true, value = "select count(id) from quote_histories")
     long getCountElements();
+
+    List<Quote> getAllByTimeFrame(TimeFrame timeFrame);
 
 }
